@@ -5,6 +5,7 @@ import initWebRoutes from './route/web';
 import connectDB from './config/connectDB';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import { logRequestStart } from './log';
 
 require('dotenv').config();
 let app = express();
@@ -40,6 +41,8 @@ app.use(
 
 app.use(cookieParser());
 app.use(express.json());
+
+app.use(logRequestStart);
 
 viewEngine(app);
 initWebRoutes(app);
