@@ -110,8 +110,11 @@ export const Login = async (req, res) => {
         // console.log('refreshToken: ', refreshToken);
         // console.log('accessToken: ', accessToken);
         res.cookie('refreshToken', refreshToken, {
+            // httpOnly: true,
+            // maxAge: 7 * 24 * 60 * 60 * 1000,
+            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
             httpOnly: true,
-            maxAge: 7 * 24 * 60 * 60 * 1000,
+            secure: req.secure || req.headers['x-forwarded-proto'] === 'https', //Boolean: true or false
         });
 
         return res.json({

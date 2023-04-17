@@ -31,6 +31,17 @@ app.use(
     })
 );
 
+// app.use(
+//     cors({
+//         origin: 'http://localhost:3000',
+//         credentials: 'include',
+//         optionsSuccessStatus: 200,
+//         allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'device-remember-token', 'Access-Control-Allow-Origin', 'Origin', 'Accept'],
+//     })
+// );
+
+// app.options('*', cors());
+
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(
     bodyParser.urlencoded({
