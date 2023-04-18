@@ -3,7 +3,6 @@ import bodyParser from 'body-parser';
 import viewEngine from './config/viewEngine';
 import initWebRoutes from './route/web';
 import connectDB from './config/connectDB';
-import cookieParser from 'cookie-parser';
 const cookieSession = require('cookie-session');
 import cors from 'cors';
 import { logRequestStart } from './log';

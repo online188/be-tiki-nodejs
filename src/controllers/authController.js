@@ -109,13 +109,20 @@ export const Login = async (req, res) => {
         );
         // console.log('refreshToken: ', refreshToken);
         // console.log('accessToken: ', accessToken);
-        res.cookie('refreshToken', refreshToken, {
-            // httpOnly: true,
-            // maxAge: 7 * 24 * 60 * 60 * 1000,
-            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-            httpOnly: true,
-            secure: req.secure || req.headers['x-forwarded-proto'] === 'https', //Boolean: true or false
-        });
+
+        //cookie-parser
+        // res.cookie('refreshToken', refreshToken, {
+        //     // httpOnly: true,
+        //     // maxAge: 7 * 24 * 60 * 60 * 1000,
+        //     expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        //     httpOnly: true,
+        //     secure: req.secure || req.headers['x-forwarded-proto'] === 'https', //Boolean: true or false
+        // });
+
+        //cookie-session
+        req.session = {
+            refreshToken: refreshToken,
+        };
 
         return res.json({
             errCode: 0,
@@ -134,7 +141,8 @@ export const Login = async (req, res) => {
 
 // Logout
 export const Logout = async (req, res) => {
-    const refreshToken = req.cookies.refreshToken;
+    const refreshToken = req.session.refreshToken;
+    // console.log(refreshToken);
     if (!refreshToken) return res.sendStatus(204);
     const user = await db.User.findAll({
         where: {
@@ -151,7 +159,8 @@ export const Logout = async (req, res) => {
             },
         }
     );
-    res.clearCookie('refreshToken');
+    // res.clearCookie('refreshToken');
+    req.session = null;
     return res.sendStatus(200);
 };
 
