@@ -4,6 +4,7 @@ import viewEngine from './config/viewEngine';
 import initWebRoutes from './route/web';
 import connectDB from './config/connectDB';
 import cookieParser from 'cookie-parser';
+const cookieSession = require('cookie-session');
 import cors from 'cors';
 import { logRequestStart } from './log';
 
@@ -50,7 +51,9 @@ app.use(
     })
 );
 
-app.use(cookieParser());
+app.use(cookieSession({ name: 'session', keys: ['lama'], maxAge: 24 * 60 * 60 * 100 }));
+
+// app.use(cookieParser());
 app.use(express.json());
 
 app.use(logRequestStart);
