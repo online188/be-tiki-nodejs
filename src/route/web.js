@@ -14,7 +14,7 @@ import billController from '../controllers/billController';
 const upload = require('../ultils/multer');
 
 //authentication
-import { getUser, updateUser, changePassword, Register, Login, Logout } from '../controllers/authController.js';
+import { getUser, updateUser, changePassword, Register, Login, Logout, success, error, googleProfileAuthenticate, googleAuthenticate } from '../controllers/authController.js';
 import { verifyToken } from '../middleware/verifyToken.js';
 import { refreshToken } from '../controllers/refreshToken.js';
 
@@ -29,6 +29,12 @@ let initWebRouter = (app) => {
     router.post('/auth/login', Login);
     router.get('/auth/token', refreshToken);
     router.delete('/auth/logout', Logout);
+
+    // Social login
+    router.get('/auth/login/success', success);
+    router.get('/auth/login/failed', error);
+    router.get('/auth/google', googleProfileAuthenticate);
+    router.get('/auth/google/callback', googleAuthenticate);
 
     // Order with login
     router.post('/add-item-to-cart', verifyToken, orderController.addToCart);

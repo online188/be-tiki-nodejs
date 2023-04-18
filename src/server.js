@@ -4,6 +4,8 @@ import viewEngine from './config/viewEngine';
 import initWebRoutes from './route/web';
 import connectDB from './config/connectDB';
 const cookieSession = require('cookie-session');
+const passportSetup = require('./passport');
+const passport = require('passport');
 import cors from 'cors';
 import { logRequestStart } from './log';
 
@@ -50,9 +52,11 @@ app.use(
     })
 );
 
-app.use(cookieSession({ name: 'session', keys: ['lama'], maxAge: 24 * 60 * 60 * 100 }));
-
+app.use(cookieSession({ name: 'session', keys: ['lama'], maxAge: 365 * 24 * 60 * 60 * 100 }));
 // app.use(cookieParser());
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(express.json());
 
 app.use(logRequestStart);

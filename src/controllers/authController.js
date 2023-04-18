@@ -2,7 +2,9 @@ import db from '../models/index';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import authService from '../services/authService';
+const passport = require('passport');
 
+const CLIENT_URL = 'http://localhost:3000/';
 const date = new Date();
 const joinDate = date.valueOf() + 7 * 60 * 60;
 
@@ -176,4 +178,33 @@ export const changePassword = async (req, res) => {
     } catch (error) {
         console.log(error);
     }
+};
+
+//Google Social Authenticate
+export const googleProfileAuthenticate = passport.authenticate('google', {
+    scope: ['profile'],
+});
+
+export const googleAuthenticate = passport.authenticate('google', {
+    successRedirect: CLIENT_URL,
+
+    failureRedirect: '/auth/login/failed',
+});
+
+//Routes for Social Data
+export const success = async (req, res) => {
+    if (req.user) {
+        res.status(200).json({
+            sucsess: true,
+            message: 'Successfull',
+            user: req.user,
+        });
+    }
+};
+
+export const error = async (req, res) => {
+    res.status(401).json({
+        success: false,
+        message: 'failure',
+    });
 };
