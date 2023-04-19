@@ -6,51 +6,51 @@ module.exports = {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
 
             category_id: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
 
             supplier_id: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
-            
+
             name: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
-            
+
             image: {
                 type: Sequelize.STRING,
                 allowNull: true,
             },
-            
+
             price: {
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
 
             sale: {
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
 
             qty: {
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
 
             cloudinary_id: {
-                type: Sequelize.INTEGER,
+                type: Sequelize.STRING,
                 allowNull: true,
             },
 
             createdAt: {
                 allowNull: false,
-                type: Sequelize.DATE
+                type: Sequelize.DATE,
             },
             updatedAt: {
                 allowNull: false,
-                type: Sequelize.DATE
-            }
+                type: Sequelize.DATE,
+            },
         });
     },
     down: async (queryInterface, Sequelize) => {
@@ -59,6 +59,6 @@ module.exports = {
         queryInterface.changeColumn('Products', 'image', {
             type: Sequelize.STRING,
             allowNull: true,
-        })
-    }
+        });
+    },
 };
