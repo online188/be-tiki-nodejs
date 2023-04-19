@@ -1,4 +1,4 @@
-import db from "../models/index";
+import db from '../models/index';
 import bcrypt from 'bcryptjs';
 const salt = bcrypt.genSaltSync(10);
 const { cloudinary } = require('../ultils/cloudinary');
@@ -10,10 +10,10 @@ let hashUserPassword = (password) => {
             let hashPassword = await bcrypt.hashSync(password, salt);
             resolve(hashPassword);
         } catch (e) {
-            reject(e)
+            reject(e);
         }
-    })
-}
+    });
+};
 
 //Login
 let handleUserLogin = (email, password) => {
@@ -45,22 +45,19 @@ let handleUserLogin = (email, password) => {
                     }
                 } else {
                     userData.errCode = 2;
-                    userData.errMessage = `User's not found`
+                    userData.errMessage = `User's not found`;
                 }
-
-
             } else {
                 // return error
                 userData.errCode = 1;
-                userData.errMessage = `Your's email isn't exist in your system.Plz try other Email`
+                userData.errMessage = `Your's email isn't exist in your system.Plz try other Email`;
             }
-            resolve(userData)
-
+            resolve(userData);
         } catch (e) {
             reject(e);
         }
-    })
-}
+    });
+};
 
 //check email login
 let checkUserEmail = (userEmail) => {
@@ -68,13 +65,13 @@ let checkUserEmail = (userEmail) => {
         try {
             let user = await db.User.findOne({
                 where: { email: userEmail },
-            })
-            user ? resolve(true) : resolve(false)
+            });
+            user ? resolve(true) : resolve(false);
         } catch (e) {
             reject(e);
         }
-    })
-}
+    });
+};
 
 // getAllUSers
 let getAllUsers = (userId) => {
@@ -84,31 +81,32 @@ let getAllUsers = (userId) => {
             if (userId === 'ALL') {
                 users = await db.User.findAll({
                     attributes: {
-                        exclude: ['password']
+                        exclude: ['password'],
                     },
 
-                    include : [{
-                        model: db.Point,
-                        as : 'userData',
-                        attributes: ['id', 'point', 'userId'],
-                    }],
-                            
-                })
+                    include: [
+                        {
+                            model: db.Point,
+                            as: 'userData',
+                            attributes: ['id', 'point', 'userId'],
+                        },
+                    ],
+                });
             }
             if (userId && userId !== 'ALL') {
                 users = await db.User.findOne({
                     where: { id: userId },
                     attributes: {
-                        exclude: ['password']
-                    }
-                })
+                        exclude: ['password'],
+                    },
+                });
             }
             resolve(users);
         } catch (e) {
             reject(e);
         }
-    })
-}
+    });
+};
 
 //Create USers
 let createNewUser = (data, file) => {
@@ -119,51 +117,49 @@ let createNewUser = (data, file) => {
             if (check === true) {
                 resolve({
                     errCode: 1,
-                    errMessage: 'Your email is already in used, Plz try another email'
-                })
-            } else{
-                if(file) {
+                    errMessage: 'Your email is already in used, Plz try another email',
+                });
+            } else {
+                if (file) {
                     const result = await cloudinary.uploader.upload(file.path);
                     data.image = result.url;
                     data.cloudinary_id = result.public_id;
                 }
                 let newUser = await db.User.create({
-                    ...data
+                    ...data,
                 });
                 resolve(newUser);
-            } 
-            
+            }
         } catch (e) {
             reject(e);
         }
-    })
-}
+    });
+};
 
 //delete Users
 let deleteUser = (userId) => {
     return new Promise(async (resolve, reject) => {
         let foundUser = await db.User.findOne({
-            where: { id: userId }
-        })
+            where: { id: userId },
+        });
 
         if (!foundUser) {
             resolve({
                 errCode: 2,
-                errMessage: `The user isn't exist`
-            })
+                errMessage: `The user isn't exist`,
+            });
         }
 
         await db.User.destroy({
-            where: { id: userId }
+            where: { id: userId },
         });
 
         resolve({
             errCode: 0,
-            message: `The user is deleted`
-        })
-
-    })
-}
+            message: `The user is deleted`,
+        });
+    });
+};
 
 //update Users
 let updateUserData = (data, file) => {
@@ -172,17 +168,18 @@ let updateUserData = (data, file) => {
             if (!data.id) {
                 resolve({
                     errCode: 2,
-                    errMessage: 'Missing required parameter'
-                })
+                    errMessage: 'Missing required parameter',
+                });
             }
 
             let user = await db.User.findOne({
                 where: { id: data.id },
-                raw: false
-            })
+                raw: false,
+            });
 
             if (user) {
-                if(file) {
+                if (file) {
+                    await cloudinary.uploader.destroy(user.cloudinary_id);
                     const result = await cloudinary.uploader.upload(file.path);
                     data.image = result.url;
                     data.cloudinary_id = result.public_id;
@@ -198,23 +195,23 @@ let updateUserData = (data, file) => {
                 user.cloudinary_id = data.cloudinary_id;
 
                 await user.save({
-                    ...data
+                    ...data,
                 });
                 resolve({
                     errCode: 0,
-                    message: 'The user is updated'
-                })
+                    message: 'The user is updated',
+                });
             } else {
                 resolve({
                     errCode: 1,
-                    errMessage: `User's not found`
-                })
+                    errMessage: `User's not found`,
+                });
             }
         } catch (e) {
             reject(e);
         }
-    })
-}
+    });
+};
 
 //getAllCode
 let getAllCodeService = (typeInput) => {
@@ -223,12 +220,12 @@ let getAllCodeService = (typeInput) => {
             if (!typeInput) {
                 resolve({
                     errCode: 1,
-                    errMessage: 'Missing required parameter'
-                })
+                    errMessage: 'Missing required parameter',
+                });
             } else {
                 let res = {};
                 let allcode = await db.Allcode.findAll({
-                    where: { type: typeInput }
+                    where: { type: typeInput },
                 });
                 res.errCode = 0;
                 res.data = allcode;
@@ -237,8 +234,8 @@ let getAllCodeService = (typeInput) => {
         } catch (e) {
             reject(e);
         }
-    })
-}
+    });
+};
 
 // get point user
 let getPointUser = (userId) => {
@@ -247,10 +244,11 @@ let getPointUser = (userId) => {
             let user = await db.User.findOne({
                 where: { id: userId },
                 attributes: {
-                    exclude: ['createdAt', 'updatedAt', 'password', 'refresh_token', 'cloudinary_id']
+                    exclude: ['createdAt', 'updatedAt', 'password', 'refresh_token', 'cloudinary_id'],
                 },
 
-                include: [{
+                include: [
+                    {
                         model: db.Point,
                         as: 'userData',
                         attributes: ['id', 'point', 'userId'],
@@ -259,17 +257,17 @@ let getPointUser = (userId) => {
                         model: db.History,
                         as: 'historyData',
                         attributes: {
-                            exclude: ['createdAt', 'updatedAt']
-                        }
-                    }
+                            exclude: ['createdAt', 'updatedAt'],
+                        },
+                    },
                 ],
-            })
+            });
             resolve(user);
         } catch (e) {
             reject(e);
         }
-    })
-}
+    });
+};
 
 module.exports = {
     handleUserLogin,
@@ -278,5 +276,5 @@ module.exports = {
     deleteUser,
     updateUserData,
     getAllCodeService,
-    getPointUser
-}
+    getPointUser,
+};

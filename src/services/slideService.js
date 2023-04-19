@@ -1,4 +1,4 @@
-import db from "../models/index";
+import db from '../models/index';
 const { cloudinary } = require('../ultils/cloudinary');
 
 //get all slides
@@ -7,12 +7,11 @@ let GetAllSlide = (id) => {
         try {
             let slides = '';
             if (id === 'ALL') {
-                slides = await db.Slide.findAll({
-                })
-            } 
-            if(id && id !== 'ALL') {
+                slides = await db.Slide.findAll({});
+            }
+            if (id && id !== 'ALL') {
                 slides = await db.Slide.findOne({
-                    where: { id: id }
+                    where: { id: id },
                 });
             }
             resolve(slides);
@@ -26,38 +25,39 @@ let GetAllSlide = (id) => {
 let CreateSlide = (data, file) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if(file){
+            if (file) {
                 const result = await cloudinary.uploader.upload(file.path);
                 data.image = result.secure_url;
                 data.cloudinary_id = result.public_id;
             }
             let newSlide = await db.Slide.create({
-                ...data
+                ...data,
             });
             resolve(newSlide);
         } catch (e) {
             reject(e);
         }
-    })
-}
+    });
+};
 
 //edit slide
 let EditSlide = (data, file) => {
     return new Promise(async (resolve, reject) => {
-        try { 
+        try {
             let slide = await db.Slide.findOne({
                 where: { id: data.id },
-                raw: false
+                raw: false,
             });
 
-            if(!slide) {
-                resolve ({
+            if (!slide) {
+                resolve({
                     errCode: 1,
-                    errMessage: 'Slide not found'
-                })
+                    errMessage: 'Slide not found',
+                });
             }
 
-            if(file){
+            if (file) {
+                await cloudinary.uploader.destroy(slide.cloudinary_id);
                 const result = await cloudinary.uploader.upload(file.path);
                 data.image = result.secure_url;
                 data.cloudinary_id = result.public_id;
@@ -66,15 +66,12 @@ let EditSlide = (data, file) => {
             slide.status = data.status;
             slide.image = data.image;
             slide.cloudinary_id = data.cloudinary_id;
-            await slide.save(
-                {...data }
-            );
+            await slide.save({ ...data });
             resolve({
                 errCode: 0,
-                errMessage: 'The slide is updated'
-            })            
-        
-        } catch (e) {   
+                errMessage: 'The slide is updated',
+            });
+        } catch (e) {
             reject(e);
         }
     });
@@ -85,32 +82,33 @@ let DeleteSlide = (slideId) => {
     return new Promise(async (resolve, reject) => {
         try {
             let foundSlide = await db.Slide.findOne({
-                where: { id: slideId }
-            })
-    
+                where: { id: slideId },
+            });
+
             if (!foundSlide) {
                 resolve({
                     errCode: 2,
-                    errMessage: `The slide isn't exist`
-                })
+                    errMessage: `The slide isn't exist`,
+                });
             }
 
-            if(foundSlide.cloudinary_id) {
+            if (foundSlide.cloudinary_id) {
+                await cloudinary.uploader.destroy(foundSlide.cloudinary_id);
                 await cloudinary.uploader.destroy(foundSlide.cloudinary_id);
             }
-    
+
             await db.Slide.destroy({
-                where: { id: slideId }
+                where: { id: slideId },
             });
-    
+
             resolve({
                 errCode: 0,
                 message: `The slide is deleted`,
-            })
+            });
         } catch (e) {
             reject(e);
         }
-    })
+    });
 };
 
 //get all special category
@@ -119,12 +117,11 @@ let GetAllSpecialCategory = (id) => {
         try {
             let specialCategory = '';
             if (id === 'ALL') {
-                specialCategory = await db.SpecialCategory.findAll({
-                })
-            } 
-            if(id && id !== 'ALL') {
+                specialCategory = await db.SpecialCategory.findAll({});
+            }
+            if (id && id !== 'ALL') {
                 specialCategory = await db.SpecialCategory.findOne({
-                    where: { id: id }
+                    where: { id: id },
                 });
             }
             resolve(specialCategory);
@@ -138,39 +135,40 @@ let GetAllSpecialCategory = (id) => {
 let CreateSpecialCategory = (data, file) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if(file){
+            if (file) {
                 const result = await cloudinary.uploader.upload(file.path);
                 data.image = result.secure_url;
                 data.cloudinary_id = result.public_id;
             }
 
             let newSpecialCategory = await db.SpecialCategory.create({
-                ...data
+                ...data,
             });
             resolve(newSpecialCategory);
         } catch (e) {
             reject(e);
         }
-    })
+    });
 };
 
 //edit special category
 let EditSpecialCategory = (data, file) => {
     return new Promise(async (resolve, reject) => {
-        try { 
+        try {
             let specialCategory = await db.SpecialCategory.findOne({
                 where: { id: data.id },
-                raw: false
+                raw: false,
             });
 
-            if(!specialCategory) {
-                resolve ({
+            if (!specialCategory) {
+                resolve({
                     errCode: 1,
-                    errMessage: 'SpecialCategory not found'
-                })
+                    errMessage: 'SpecialCategory not found',
+                });
             }
 
-            if(file){
+            if (file) {
+                await cloudinary.uploader.destroy(specialCategory.cloudinary_id);
                 const result = await cloudinary.uploader.upload(file.path);
                 data.image = result.secure_url;
                 data.cloudinary_id = result.public_id;
@@ -179,51 +177,45 @@ let EditSpecialCategory = (data, file) => {
             specialCategory.categoryId = data.categoryId;
             specialCategory.image = data.image;
             specialCategory.cloudinary_id = data.cloudinary_id;
-            await specialCategory.save(
-                {...data }
-            );
+            await specialCategory.save({ ...data });
             resolve({
                 errCode: 0,
-                errMessage: 'The special category is updated'
-            })            
-
-        } catch (e) {   
+                errMessage: 'The special category is updated',
+            });
+        } catch (e) {
             reject(e);
         }
     });
-};     
+};
 
 //delete special category
 let DeleteSpecialCategory = (categoryId) => {
     return new Promise(async (resolve, reject) => {
         try {
             let foundItem = await db.SpecialCategory.findOne({
-                where: { id: categoryId }
-            })
-    
+                where: { id: categoryId },
+            });
+
             if (!foundItem) {
                 resolve({
                     errCode: 2,
-                    errMessage: `The special category isn't exist`
-                })
+                    errMessage: `The special category isn't exist`,
+                });
             }
-    
+
             await db.SpecialCategory.destroy({
-                where: { id: categoryId }
+                where: { id: categoryId },
             });
-    
+
             resolve({
                 errCode: 0,
                 message: `The special category is deleted`,
-            })
+            });
         } catch (e) {
             reject(e);
         }
-    })
+    });
 };
-
-
-
 
 module.exports = {
     GetAllSlide,
@@ -233,5 +225,5 @@ module.exports = {
     GetAllSpecialCategory,
     CreateSpecialCategory,
     EditSpecialCategory,
-    DeleteSpecialCategory
-}
+    DeleteSpecialCategory,
+};

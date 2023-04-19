@@ -138,7 +138,6 @@ let editProduct = (data, file) => {
                 where: { id: data.id },
                 raw: false,
             });
-
             if (!product) {
                 resolve({
                     errCode: 1,
@@ -147,6 +146,7 @@ let editProduct = (data, file) => {
             }
 
             if (file) {
+                await cloudinary.uploader.destroy(product.cloudinary_id);
                 const result = await cloudinary.uploader.upload(file.path);
                 data.image = result.url;
                 data.cloudinary_id = result.public_id;
@@ -181,6 +181,7 @@ let deleteProduct = (productid) => {
             let foundProduct = await db.Product.findOne({
                 where: { id: productid },
             });
+            await cloudinary.uploader.destroy(foundProduct.cloudinary_id);
 
             if (!foundProduct) {
                 resolve({
@@ -471,6 +472,7 @@ let editCategory = (data, file) => {
             }
 
             if (file) {
+                await cloudinary.uploader.destroy(category.cloudinary_id);
                 const result = await cloudinary.uploader.upload(file.path);
                 data.image = result.url;
                 data.cloudinary_id = result.public_id;

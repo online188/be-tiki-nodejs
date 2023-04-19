@@ -80,6 +80,7 @@ let editNews = (data, file) => {
             }
 
             if (file) {
+                await cloudinary.uploader.destroy(news.cloudinary_id);
                 const result = await cloudinary.uploader.upload(file.path);
                 data.image = result.secure_url;
                 data.cloudinary_id = result.public_id;

@@ -24,6 +24,7 @@ let updateUser = (data, file) => {
 
             if (user) {
                 if (file) {
+                    await cloudinary.uploader.destroy(user.cloudinary_id);
                     const result = await cloudinary.uploader.upload(file.path);
                     data.image = result.url;
                     data.cloudinary_id = result.public_id;
