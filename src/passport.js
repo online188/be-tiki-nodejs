@@ -2,6 +2,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const GithubStrategy = require('passport-github2').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
 const passport = require('passport');
+const { LoginSocial } = require('./controllers/authController');
 
 const GOOGLE_CLIENT_ID = '867648153807-l2tqmf20vjkphm3j0acagl8qpa3i71uu.apps.googleusercontent.com';
 const GOOGLE_CLIENT_SECRET = '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';
@@ -23,9 +24,10 @@ passport.use(
             // console.log(profile);
             // done(null, profile);
             try {
-                console.log(profile);
-
                 done(null, profile);
+                // Nếu chưa có user thì tạo mới, viêt function LoginSocial: response: accessToken + refreshToken
+                // Nếu user có rồi thì vẫn gửi both: accessToken + refreshToken
+
                 // let user = await UserSocial.findOne({ googleId: profile.id });
                 // if (user) {
                 //     return done(null, user);

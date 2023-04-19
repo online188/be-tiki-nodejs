@@ -193,12 +193,63 @@ export const googleAuthenticate = passport.authenticate('google', {
 
 //Routes for Social Data
 export const success = async (req, res) => {
+    // console.log('req.user: ', req.user);
     if (req.user) {
-        res.status(200).json({
-            sucsess: true,
-            message: 'Successfull',
-            user: req.user,
-        });
+        try {
+            const isExist = await db.User.findOne({
+                where: { googleId: req.user.id },
+            });
+            let user;
+            if (!isExist) {
+                user = await db.User.create({
+                    username: req.user.displayName,
+                    googleId: req.user.id,
+                    image: req.user.photos[0].value,
+                    email: 'GoogleAccount@gmail.com',
+                    joinDate: joinDate,
+                    roleId: 'User',
+                    positionId: 'User',
+                });
+            }
+
+            const id = isExist ? isExist.id : user.id;
+            const username = isExist ? isExist.username : user.username;
+            const email = isExist ? isExist.email : user.email;
+
+            // console.log(process.env.ACCESS_TOKEN_SECRET, process.env.REFRESH_TOKEN_SECRET);
+            const accessToken = jwt.sign({ id, username, email }, process.env.ACCESS_TOKEN_SECRET, {
+                expiresIn: '1d',
+            });
+            const refreshToken = jwt.sign({ id, username, email }, process.env.REFRESH_TOKEN_SECRET, {
+                expiresIn: '7d',
+            });
+            await db.User.update(
+                { refresh_token: refreshToken },
+                {
+                    where: {
+                        id: id,
+                    },
+                }
+            );
+            //cookie-session
+            req.session = {
+                refreshToken: refreshToken,
+            };
+
+            return res.json({
+                errCode: 0,
+                status: 200,
+                errMessage: 'Login success',
+                accessToken,
+            });
+        } catch (error) {
+            console.log(error);
+            res.status(404).json({
+                errCode: 2,
+                status: 404,
+                errMessage: 'Somethings Wrong!!!',
+            });
+        }
     }
 };
 

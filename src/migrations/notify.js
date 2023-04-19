@@ -6,7 +6,7 @@ module.exports = {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
 
             userId: {
@@ -34,11 +34,16 @@ module.exports = {
                 allowNull: false,
             },
 
-            link : {
+            type: {
                 type: Sequelize.STRING,
                 allowNull: false,
             },
-            
+
+            link: {
+                type: Sequelize.STRING,
+                allowNull: false,
+            },
+
             image: {
                 type: Sequelize.STRING,
                 allowNull: false,
@@ -49,18 +54,17 @@ module.exports = {
                 allowNull: false,
             },
 
-
             createdAt: {
                 allowNull: false,
-                type: Sequelize.DATE
+                type: Sequelize.DATE,
             },
             updatedAt: {
                 allowNull: false,
-                type: Sequelize.DATE
-            }
+                type: Sequelize.DATE,
+            },
         });
     },
     down: async (queryInterface, Sequelize) => {
         await queryInterface.dropTable('notifies');
-    }
+    },
 };
