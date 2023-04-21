@@ -54,6 +54,7 @@ app.use(
 
 app.use(cookieSession({ name: 'session', keys: ['lama'], maxAge: 365 * 24 * 60 * 60 * 100 }));
 // app.use(cookieParser());
+
 app.use(passport.initialize());
 app.use(passport.session());
 
