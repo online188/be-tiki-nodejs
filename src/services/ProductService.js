@@ -83,10 +83,11 @@ let GetPaginationProducts = (req) => {
 
             let response = await db.Product.findAndCountAll({
                 where: condition,
+                order: [['updatedAt', 'DESC']],
                 limit,
                 offset,
                 attributes: {
-                    exclude: ['createdAt', 'updatedAt'],
+                    exclude: ['createdAt'],
                 },
 
                 include: [
