@@ -36,7 +36,7 @@ let updateUser = (data, file) => {
                 user.address = data.address;
                 user.address2 = data.address2;
                 user.phoneNumber = data.phoneNumber;
-                user.roleId = data.roleId;
+                // user.roleId = data.roleId;  //ko được set roleId ở đây
                 user.positionId = data.positionId;
                 user.gender = data.gender;
                 user.image = data.image;
