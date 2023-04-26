@@ -6,105 +6,104 @@ module.exports = {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
 
             billCode: {
                 type: Sequelize.STRING,
-                allowNull: false
+                allowNull: true,
             },
 
             userId: {
                 type: Sequelize.INTEGER,
-                allowNull: false
+                allowNull: false,
             },
 
             username: {
                 type: Sequelize.STRING,
-                allowNull: false
+                allowNull: false,
             },
 
             address: {
                 type: Sequelize.STRING,
-                allowNull: false
+                allowNull: true,
             },
 
             phone: {
                 type: Sequelize.INTEGER,
-                allowNull: false
+                allowNull: true,
             },
             email: {
                 type: Sequelize.STRING,
-                allowNull: true
+                allowNull: true,
             },
 
             code: {
                 type: Sequelize.STRING,
-                allowNull: false
+                allowNull: true,
             },
-
 
             name: {
                 type: Sequelize.STRING,
-                allowNull: false
+                allowNull: true,
             },
 
             qty: {
                 type: Sequelize.INTEGER,
-                allowNull: false
+                allowNull: true,
             },
 
             price: {
                 type: Sequelize.INTEGER,
-                allowNull: false
+                allowNull: true,
             },
 
             sale: {
                 type: Sequelize.INTEGER,
-                allowNull: false
+                allowNull: true,
             },
 
             total: {
                 type: Sequelize.INTEGER,
-                allowNull: false
+                allowNull: true,
             },
 
             datePayment: {
                 type: Sequelize.STRING,
-                allowNull: false
+                allowNull: true,
             },
 
             payment: {
                 type: Sequelize.STRING,
-                allowNull: false
+                allowNull: true,
             },
 
             status: {
                 type: Sequelize.STRING,
-                allowNull: false
+                allowNull: true,
             },
 
             imageBill: {
                 type: Sequelize.STRING,
-                allowNull: true
+                allowNull: true,
             },
 
             cloudinary_id: {
                 type: Sequelize.INTEGER,
-                allowNull: true
+                allowNull: true,
             },
 
             createdAt: {
                 allowNull: false,
-                type: Sequelize.DATE
+                type: Sequelize.DATE,
             },
             updatedAt: {
                 allowNull: false,
-                type: Sequelize.DATE
-            }
+                type: Sequelize.DATE,
+            },
         });
     },
     down: async (queryInterface, Sequelize) => {
         await queryInterface.dropTable('Bills');
-    }
+    },
 };

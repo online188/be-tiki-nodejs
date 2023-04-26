@@ -4,7 +4,7 @@ const { Sequelize } = require('sequelize');
 const sequelize = new Sequelize('tiki', 'root', null, {
     host: 'localhost',
     dialect: 'mysql',
-    logging: false
+    logging: false,
 });
 
 let connectDB = async () => {
@@ -14,5 +14,5 @@ let connectDB = async () => {
     } catch (error) {
         console.error('Unable to connect to the database:', error);
     }
-}
+};
 module.exports = connectDB;

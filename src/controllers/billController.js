@@ -4,6 +4,7 @@ const billController = {
     // send bill
     sendBill: async (req, res) => {
         try {
+            // console.log(123);
             const result = await billService.sendBill(req.body);
             res.status(200).json(result);
         } catch (error) {
@@ -18,12 +19,12 @@ const billController = {
             res.status(200).json({
                 errCode: 0,
                 errMsg: 'ok',
-                result
+                result,
             });
         } catch (error) {
             res.status(500).json(error);
         }
-    }
-}
+    },
+};
 
-module.exports = billController
+module.exports = billController;

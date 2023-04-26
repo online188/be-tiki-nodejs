@@ -58,18 +58,20 @@ import nodemailer from 'nodemailer';
 
 // send bill
 let sendBill = async (dataSend) => {
+    console.log(dataSend.receiveEmail);
+
     let transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 587,
-        secure: false,
+        // host: 'smtp.gmail.com',
+        // port: 587,
+        // secure: false,
+        service: 'Gmail',
         auth: {
             user: process.env.EMAIL_APP,
             pass: process.env.EMAIL_APP_PASSWORD,
         },
     });
-
     let info = await transporter.sendMail({
-        from: '"HoangNam 👻" <alphalinkmedia@gmail.com>',
+        from: '"HoangNam 👻" <chimsesaynang@gmail.com>',
         to: dataSend.receiveEmail,
         subject: 'Hoá đơn mua hàng',
         html: getBodyHTMLBill(dataSend),
