@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
             refresh_token: DataTypes.TEXT,
             joinDate: DataTypes.BIGINT,
             image: DataTypes.STRING,
-            cloudinary_id: DataTypes.INTEGER,
+            cloudinary_id: DataTypes.STRING,
             googleId: DataTypes.STRING,
         },
         {

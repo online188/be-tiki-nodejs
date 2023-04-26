@@ -176,6 +176,7 @@ let updateUserData = (data, file) => {
                 where: { id: data.id },
                 raw: false,
             });
+            // console.log(123);
 
             if (user) {
                 if (file) {
@@ -184,6 +185,7 @@ let updateUserData = (data, file) => {
                     data.image = result.url;
                     data.cloudinary_id = result.public_id;
                 }
+                console.log(data);
                 user.email = data.email;
                 user.username = data.username;
                 user.address = data.address;

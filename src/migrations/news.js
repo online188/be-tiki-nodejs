@@ -6,24 +6,24 @@ module.exports = {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
 
             name: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
 
             productId: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
             },
-            
+
             category_id: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
 
             author_id: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
 
             image: {
@@ -32,27 +32,26 @@ module.exports = {
             },
 
             cloudinary_id: {
-                type: Sequelize.INTEGER,
+                type: Sequelize.STRING,
                 allowNull: true,
             },
 
-
             description: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
 
             date: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
 
             createdAt: {
                 allowNull: false,
-                type: Sequelize.DATE
+                type: Sequelize.DATE,
             },
             updatedAt: {
                 allowNull: false,
-                type: Sequelize.DATE
-            }
+                type: Sequelize.DATE,
+            },
         });
     },
     down: async (queryInterface, Sequelize) => {
@@ -61,6 +60,6 @@ module.exports = {
         queryInterface.changeColumn('News', 'image', {
             type: Sequelize.STRING,
             allowNull: true,
-        })
-    }
+        });
+    },
 };

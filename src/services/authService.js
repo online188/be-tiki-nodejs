@@ -24,12 +24,15 @@ let updateUser = (data, file) => {
 
             if (user) {
                 if (file) {
-                    await cloudinary.uploader.destroy(user.cloudinary_id);
+                    if (user.cloudinary_id != null) {
+                        await cloudinary.uploader.destroy(user.cloudinary_id);
+                    }
                     const result = await cloudinary.uploader.upload(file.path);
                     data.image = result.url;
                     data.cloudinary_id = result.public_id;
-                    // console.log(result);
+                    console.log(result);
                 }
+                console.log(data);
                 user.email = data.email;
                 user.username = data.username;
                 user.age = data.age;

@@ -89,7 +89,7 @@ module.exports = {
             },
 
             cloudinary_id: {
-                type: Sequelize.INTEGER,
+                type: Sequelize.STRING,
                 allowNull: true,
             },
 
